@@ -1,0 +1,6 @@
+Flask
+scikit-learn
+joblib
+python-dotenv
+tavily-python
+gunicorn

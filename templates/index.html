@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI - News Verification</title>
+
+    <!-- Flask CSS -->
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     TOAST NOTIFICATION
+========================================================= -->
+
+<div id="toastContainer"></div>
+
+
+
+<!-- =========================================================
+     LOGIN PAGE
+========================================================= -->
+
+<section id="loginPage" class="auth-page">
+
+    <div class="auth-container">
+
+
+        <div class="auth-logo">
+
+            <div class="logo-icon">
+                AI
+            </div>
+
+            <h1>
+                AI News Verification
+            </h1>
+
+            <p>
+                Verify news using Artificial Intelligence
+            </p>
+
+        </div>
+
+
+
+        <div class="auth-card">
+
+            <h2>
+                Welcome Back
+            </h2>
+
+            <p class="auth-subtitle">
+                Sign in to continue
+            </p>
+
+
+            <!-- LOGIN FORM -->
+
+            <form
+                id="loginForm"
+                autocomplete="on"
+                onsubmit="signIn(); return false;">
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="loginEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="username"
+                        oninput="showSavedAccountSuggestion()"
+                        required>
+
+
+                    <!-- =====================================
+                         SAVED ACCOUNT SUGGESTION
+                    ====================================== -->
+
+                    <div
+                        id="savedAccountSuggestion"
+                        class="saved-account-suggestion hidden">
+
+
+                        <div class="saved-account-icon">
+
+                            👤
+
+                        </div>
+
+
+                        <div class="saved-account-info">
+
+                            <strong>
+                                Existing Account
+                            </strong>
+
+                            <span id="savedAccountEmail">
+                                Saved account
+                            </span>
+
+                        </div>
+
+
+                        <span class="saved-account-arrow">
+                            →
+                        </span>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('loginPassword','loginEye')">
+
+                            <span id="loginEye">
+                                👁
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- REMEMBER ME -->
+
+                <div class="remember-row">
+
+
+                    <label class="checkbox-label">
+
+                        <input
+                            type="checkbox"
+                            id="rememberMe">
+
+                        <span>
+                            Remember Me
+                        </span>
+
+                    </label>
+
+
+
+                    <button
+                        type="button"
+                        class="text-button"
+                        onclick="showForgotPassword()">
+
+                        Forgot Password?
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- SIGN IN -->
+
+                <button
+                    type="submit"
+                    class="primary-btn full-btn">
+
+                    Sign In
+
+                </button>
+
+            </form>
+
+
+
+            <div class="auth-divider">
+
+                <span>
+                    OR
+                </span>
+
+            </div>
+
+
+
+            <p class="auth-switch">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    class="text-button"
+                    onclick="showSignUp()">
+
+                    Create Account
+
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- =========================================================
+     SIGN UP PAGE
+========================================================= -->
+
+<section
+    id="signupPage"
+    class="auth-page hidden">
+
+
+    <div class="auth-container">
+
+
+        <div class="auth-logo">
+
+            <div class="logo-icon">
+                AI
+            </div>
+
+            <h1>
+                AI News Verification
+            </h1>
+
+            <p>
+                Create your account
+            </p>
+
+        </div>
+
+
+
+        <div class="auth-card">
+
+            <h2>
+                Create Account
+            </h2>
+
+            <p class="auth-subtitle">
+                Start verifying news with AI
+            </p>
+
+
+
+            <form
+                onsubmit="signUp(); return false;">
+
+
+                <!-- FULL NAME -->
+
+                <div class="form-group">
+
+                    <label for="signupName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your name"
+                        autocomplete="name"
+                        required>
+
+                </div>
+
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="signupEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required>
+
+                </div>
+
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="signupPassword">
+                        Password
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required>
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('signupPassword','signupEye')">
+
+                            <span id="signupEye">
+                                👁
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SIGN UP BUTTON -->
+
+                <button
+                    type="submit"
+                    class="primary-btn full-btn">
+
+                    Sign Up
+
+                </button>
+
+            </form>
+
+
+
+            <p class="auth-switch">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    class="text-button"
+                    onclick="showLogin()">
+
+                    Sign In
+
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- =========================================================
+     FORGOT PASSWORD PAGE
+========================================================= -->
+
+<section
+    id="forgotPage"
+    class="auth-page hidden">
+
+
+    <div class="auth-container">
+
+
+        <div class="auth-logo">
+
+            <div class="logo-icon">
+                AI
+            </div>
+
+            <h1>
+                AI News Verification
+            </h1>
+
+            <p>
+                Reset your password
+            </p>
+
+        </div>
+
+
+
+        <div class="auth-card">
+
+            <h2>
+                Forgot Password?
+            </h2>
+
+            <p class="auth-subtitle">
+                Enter your registered email
+            </p>
+
+
+
+            <form
+                onsubmit="resetPassword(); return false;">
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="forgotEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="forgotEmail"
+                        placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+
+                <!-- NEW PASSWORD -->
+
+                <div class="form-group">
+
+                    <label for="newPassword">
+                        New Password
+                    </label>
+
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="newPassword"
+                            placeholder="Enter new password"
+                            required>
+
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword('newPassword','newPasswordEye')">
+
+                            <span id="newPasswordEye">
+                                👁
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RESET PASSWORD -->
+
+                <button
+                    type="submit"
+                    class="primary-btn full-btn">
+
+                    Reset Password
+
+                </button>
+
+            </form>
+
+
+
+            <p class="auth-switch">
+
+                Remember your password?
+
+                <button
+                    type="button"
+                    class="text-button"
+                    onclick="showLogin()">
+
+                    Back to Login
+
+                </button>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+
+<!-- =========================================================
+     MAIN APPLICATION
+========================================================= -->
+
+<div
+    id="app"
+    class="app hidden">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+        id="sidebar"
+        class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon small-logo">
+                AI
+            </div>
+
+
+            <div>
+
+                <h2>
+                    AI Verify
+                </h2>
+
+                <span>
+                    News Verification
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <nav class="sidebar-nav">
+
+
+            <!-- DASHBOARD -->
+
+            <button
+                class="nav-item active"
+                onclick="showPage('dashboard')">
+
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </button>
+
+
+
+            <!-- NEW ANALYSIS -->
+
+            <button
+                class="nav-item"
+                onclick="showPage('analysis')">
+
+                <span class="nav-icon">
+                    ⌕
+                </span>
+
+                <span>
+                    New Analysis
+                </span>
+
+            </button>
+
+
+
+            <!-- HISTORY -->
+
+            <button
+                class="nav-item"
+                onclick="showPage('history')">
+
+                <span class="nav-icon">
+                    ◷
+                </span>
+
+                <span>
+                    Previous History
+                </span>
+
+            </button>
+
+
+
+            <!-- PROFILE -->
+
+            <button
+                class="nav-item"
+                onclick="showPage('profile')">
+
+                <span class="nav-icon">
+                    ◉
+                </span>
+
+                <span>
+                    Profile
+                </span>
+
+            </button>
+
+        </nav>
+
+
+
+        <div class="sidebar-bottom">
+
+
+            <!-- THEME -->
+
+            <button
+                class="nav-item"
+                onclick="toggleTheme()">
+
+                <span class="nav-icon">
+                    ◐
+                </span>
+
+                <span>
+                    Dark / Light Mode
+                </span>
+
+            </button>
+
+
+
+            <!-- LOGOUT -->
+
+            <button
+                class="nav-item logout-item"
+                onclick="logout()">
+
+                <span class="nav-icon">
+                    ↪
+                </span>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP BAR
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <button
+                class="menu-button"
+                onclick="toggleSidebar()">
+
+                ☰
+
+            </button>
+
+
+
+            <div class="page-heading">
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+                <p>
+                    AI-powered news verification system
+                </p>
+
+            </div>
+
+
+
+            <div class="topbar-user">
+
+
+                <div
+                    class="user-avatar"
+                    id="profileAvatar">
+
+                    U
+
+                </div>
+
+
+                <div class="top-user-info">
+
+                    <strong id="topUserName">
+                        User
+                    </strong>
+
+                    <span>
+                        Account
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+
+        <!-- =================================================
+             DASHBOARD PAGE
+        ================================================== -->
+
+        <section
+            id="dashboard"
+            class="page-section">
+
+
+            <div class="welcome-section">
+
+
+                <div>
+
+                    <h2>
+                        News Verification Dashboard
+                    </h2>
+
+                    <p>
+                        Check news articles and review
+                        your verification history.
+                    </p>
+
+                </div>
+
+
+
+                <button
+                    class="primary-btn"
+                    onclick="showPage('analysis')">
+
+                    + New Analysis
+
+                </button>
+
+            </div>
+
+
+
+
+            <!-- STAT CARDS -->
+
+            <div class="stats-grid">
+
+
+                <!-- TOTAL CHECKED -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        #
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Total Checked
+                        </span>
+
+                        <strong id="totalChecked">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- REAL -->
+
+                <div class="stat-card real-stat">
+
+                    <div class="stat-icon">
+                        ✓
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Verified Real
+                        </span>
+
+                        <strong id="realCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FAKE -->
+
+                <div class="stat-card fake-stat">
+
+                    <div class="stat-icon">
+                        !
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Flagged Fake
+                        </span>
+
+                        <strong id="fakeCount">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AVERAGE SCORE -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        %
+                    </div>
+
+
+                    <div>
+
+                        <span class="stat-label">
+                            Average Score
+                        </span>
+
+                        <strong id="averageScore">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+            <!-- CHART + RECENT -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- CHART -->
+
+                <div class="card chart-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                REAL vs FAKE
+                            </h3>
+
+                            <p>
+                                Your analysis distribution
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="bar-chart">
+
+
+                        <div class="chart-row">
+
+                            <div class="chart-label">
+                                REAL
+                            </div>
+
+
+                            <div class="chart-track">
+
+                                <div
+                                    id="realBar"
+                                    class="chart-bar real-bar"
+                                    style="width:0%">
+
+                                </div>
+
+                            </div>
+
+
+                            <span id="realBarValue">
+                                0%
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="chart-row">
+
+                            <div class="chart-label">
+                                FAKE
+                            </div>
+
+
+                            <div class="chart-track">
+
+                                <div
+                                    id="fakeBar"
+                                    class="chart-bar fake-bar"
+                                    style="width:0%">
+
+                                </div>
+
+                            </div>
+
+
+                            <span id="fakeBarValue">
+                                0%
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- RECENT ANALYSES -->
+
+                <div class="card recent-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Recent Analyses
+                            </h3>
+
+                            <p>
+                                Your latest checks
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="text-button"
+                            onclick="showPage('history')">
+
+                            View All
+
+                        </button>
+
+                    </div>
+
+
+
+                    <div
+                        id="recentAnalyses"
+                        class="recent-list">
+
+                        <div class="empty-state">
+                            No analyses yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+
+        <!-- =================================================
+             ANALYSIS PAGE
+        ================================================== -->
+
+        <section
+            id="analysis"
+            class="page-section hidden">
+
+
+            <div class="section-intro">
+
+
+                <div>
+
+                    <h2>
+                        Analyze News
+                    </h2>
+
+                    <p>
+                        Enter a headline and news content
+                        to check the model prediction and
+                        web evidence.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="analysis-grid">
+
+
+                <!-- INPUT CARD -->
+
+                <div
+                    class="card analysis-input-card">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Submit News
+                            </h3>
+
+                            <p>
+                                Provide the news details below.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HEADLINE -->
+
+                    <div class="form-group">
+
+                        <label for="headline">
+                            News Headline
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="headline"
+                            placeholder="Enter news headline">
+
+
+                        <div class="character-count">
+
+                            <span id="headlineCount">
+                                0
+                            </span>
+
+                            characters
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NEWS CONTENT -->
+
+                    <div class="form-group">
+
+                        <label for="news">
+                            News Content
+                        </label>
+
+
+                        <textarea
+                            id="news"
+                            rows="12"
+                            placeholder="Paste or type the complete news content here..."></textarea>
+
+
+                        <div class="character-count">
+
+                            <span id="newsCount">
+                                0
+                            </span>
+
+                            characters
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="analysis-actions">
+
+
+                        <button
+                            class="primary-btn"
+                            onclick="analyzeNews()">
+
+                            <span id="analyzeButtonText">
+                                Check News
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="clearAnalysis()">
+
+                            Clear
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <!-- =================================================
+                     RESULT CARD
+                ================================================== -->
+
+                <div
+                    id="analysisResult"
+                    class="card result-card hidden">
+
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Analysis Result
+                            </h3>
+
+                            <p>
+                                AI model prediction and
+                                web-based verification
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- FINAL VERIFICATION RESULT -->
+
+                    <div class="prediction-box">
+
+                        <span class="result-label">
+                            Verification Result
+                        </span>
+
+
+                        <div
+                            id="predictionText"
+                            class="prediction-text">
+
+                            Waiting for analysis...
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- VERIFICATION DETAILS -->
+
+                    <div class="verification-details">
+
+
+                        <!-- MODEL PREDICTION -->
+
+                        <div class="verification-row">
+
+                            <span class="verification-label">
+                                Model Prediction
+                            </span>
+
+
+                            <strong id="modelPrediction">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- WEB VERIFICATION -->
+
+                        <div class="verification-row">
+
+                            <span class="verification-label">
+                                Web Verification
+                            </span>
+
+
+                            <strong id="verificationStatus">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- CONFIDENCE -->
+
+                        <div class="verification-row">
+
+                            <span class="verification-label">
+                                Verification Confidence
+                            </span>
+
+
+                            <strong id="verificationConfidence">
+                                -
+                            </strong>
+
+                        </div>
+
+
+
+                        <!-- CONFIDENCE BAR -->
+
+                        <div
+                            class="verification-confidence-container">
+
+                            <div
+                                id="verificationConfidenceBar"
+                                class="verification-confidence-bar"
+                                style="width:0%">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- REASON -->
+
+                        <div class="verification-reason">
+
+                            <strong>
+                                Verification Reason
+                            </strong>
+
+
+                            <p id="verificationReason">
+                                -
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- WEB ANSWER -->
+
+                        <div class="web-answer">
+
+                            <strong>
+                                Web Evidence Summary
+                            </strong>
+
+
+                            <p id="webAnswer">
+                                -
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- DECISION SCORE -->
+
+                    <div class="score-section">
+
+
+                        <div class="score-header">
+
+                            <span>
+                                Decision Score
+                            </span>
+
+
+                            <strong id="decisionScore">
+                                0
+                            </strong>
+
+                        </div>
+
+
+
+                        <div class="score-track">
+
+                            <div
+                                id="scoreBar"
+                                class="score-bar"
+                                style="width:0%">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <p class="score-note">
+
+                            This is a model signal,
+                            not a probability.
+
+                        </p>
+
+                    </div>
+
+
+
+
+                    <!-- WEB EVIDENCE -->
+
+                    <div class="evidence-section">
+
+
+                        <div class="evidence-header">
+
+
+                            <div>
+
+                                <h4>
+                                    Web Evidence
+                                </h4>
+
+                                <p>
+                                    Sources found through web search
+                                </p>
+
+                            </div>
+
+
+
+                            <button
+                                class="secondary-btn small-btn"
+                                onclick="copyEvidenceLink()">
+
+                                Copy Evidence Link
+
+                            </button>
+
+                        </div>
+
+
+
+                        <div
+                            id="evidenceList"
+                            class="evidence-list">
+
+
+                            <div class="empty-state">
+
+                                No evidence available yet.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+                    <!-- RESULT ACTIONS -->
+
+                    <div class="result-actions">
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="copyResult()">
+
+                            Copy Result
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="shareWhatsApp()">
+
+                            WhatsApp
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="shareTelegram()">
+
+                            Telegram
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="exportPDF()">
+
+                            Export PDF
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="downloadReport()">
+
+                            Download Report
+
+                        </button>
+
+
+
+                        <button
+                            class="secondary-btn"
+                            onclick="printReport()">
+
+                            Print Report
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+
+        <!-- =================================================
+             HISTORY PAGE
+        ================================================== -->
+
+        <section
+            id="history"
+            class="page-section hidden">
+
+
+            <div class="section-intro">
+
+
+                <div>
+
+                    <h2>
+                        Previous History
+                    </h2>
+
+                    <p>
+                        View and manage your previous analyses.
+                    </p>
+
+                </div>
+
+
+
+                <button
+                    class="secondary-btn"
+                    onclick="exportHistoryCSV()">
+
+                    Export Data
+
+                </button>
+
+            </div>
+
+
+
+
+            <!-- SEARCH / FILTER -->
+
+            <div class="card history-tools">
+
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="historySearch"
+                        placeholder="Search history..."
+                        oninput="loadHistory()">
+
+                </div>
+
+
+
+                <select
+                    id="historyFilter"
+                    onchange="loadHistory()">
+
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="REAL">
+                        Real
+                    </option>
+
+                    <option value="FAKE">
+                        Fake
+                    </option>
+
+                </select>
+
+
+
+                <button
+                    class="danger-btn"
+                    onclick="clearAllHistory()">
+
+                    Clear History
+
+                </button>
+
+            </div>
+
+
+
+
+            <!-- HISTORY LIST -->
+
+            <div class="card">
+
+
+                <div
+                    id="historyList"
+                    class="history-list">
+
+
+                    <div class="empty-state">
+
+                        No analysis history available.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+
+        <!-- =================================================
+             PROFILE PAGE
+        ================================================== -->
+
+        <section
+            id="profile"
+            class="page-section hidden">
+
+
+            <div class="section-intro">
+
+
+                <div>
+
+                    <h2>
+                        Profile
+                    </h2>
+
+                    <p>
+                        Manage your account information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+
+            <div class="profile-grid">
+
+
+                <!-- PROFILE CARD -->
+
+                <div class="card profile-card">
+
+
+                    <div
+                        class="profile-avatar-large"
+                        id="profileAvatarLarge">
+
+                        U
+
+                    </div>
+
+
+                    <h3 id="profileName">
+                        User
+                    </h3>
+
+
+                    <p>
+                        AI News Verification User
+                    </p>
+
+                </div>
+
+
+
+
+                <!-- PROFILE FORM -->
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+
+                        <div>
+
+                            <h3>
+                                Personal Information
+                            </h3>
+
+                            <p>
+                                Update your profile details.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="profileNameInput">
+                            Full Name
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="profileNameInput"
+                            placeholder="Enter your name">
+
+                    </div>
+
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="profileEmailInput">
+                            Email
+                        </label>
+
+
+                        <input
+                            type="email"
+                            id="profileEmailInput"
+                            placeholder="Enter your email"
+                            readonly>
+
+                    </div>
+
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="updateProfile()">
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+
+
+
+<!-- =========================================================
+     JAVASCRIPT LIBRARIES
+========================================================= -->
+
+<!-- jsPDF -->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>
+
+
+<!-- Flask JavaScript -->
+
+<script
+    src="{{ url_for('static', filename='js/app.js') }}">
+</script>
+
+
+</body>
+
+</html>

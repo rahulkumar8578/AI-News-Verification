@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: ai-news-verification
+    runtime: python
+    buildCommand: pip install --no-cache-dir -r requirements.txt
+    startCommand: gunicorn app:app --workers 1 --threads 2 --timeout 120
+    envVars:
+      - key: TAVILY_API_KEY
+        sync: false
